@@ -12,12 +12,7 @@ const TodoList: FunctionComponent = (props) => {
 
     const onClickHandler: MouseEventHandler<HTMLButtonElement> = () => {
         if (input.current) {
-            addTodo({
-                id: todos.length + 1,
-                name: input.current.value,
-                done: false,
-                createdAt: new Date(),
-            });
+            addTodo({name: input.current.value,});
             input.current.value = ''
         }
     };

@@ -12,8 +12,14 @@ export interface Todo {
 class AppStore {
     @observable public todos: List<Todo> = new List();
 
-    @action public addTodo = (todoItem: Todo) => {
-        this.todos.push(todoItem)
+    @action public addTodo = (todoItem: Pick<Todo, 'name'>) => {
+        this.todos.push({
+            ...todoItem,
+            id: this.todos.length + 1,
+            done: false,
+            createdAt: new Date(),
+            updatedAt: new Date()
+        })
     };
 
     @action public changeTodo = (todoItem: Todo) => {
