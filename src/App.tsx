@@ -11,6 +11,4 @@ const App: FunctionComponent = (props) => {
     );
 };
 
-export default styled(App)`
-  
-`
+export default styled(App)``

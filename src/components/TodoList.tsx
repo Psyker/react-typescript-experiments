@@ -1,32 +1,34 @@
 import * as React from 'react'
-import {FunctionComponent, MouseEventHandler, useRef} from "react";
+import {FunctionComponent, MouseEventHandler} from "react";
 import styled from "styled-components";
 import appStore from "../store/AppStore";
 import {observer} from "mobx-react-lite";
 import TodoItem from "./TodoItem";
+import {useInput, useKeyboardShortcuts} from "../utils/hooks";
 
 const TodoList: FunctionComponent = (props) => {
-
     const {todos, addTodo, doneTodos} = appStore;
-    const input = useRef<HTMLInputElement>(null);
-
-    const onClickHandler: MouseEventHandler<HTMLButtonElement> = () => {
-        if (input.current) {
-            addTodo({name: input.current.value,});
-            input.current.value = ''
+    const {setValue, ...todoInput} = useInput('');
+    const userAddTodo: MouseEventHandler<HTMLButtonElement> = () => {
+        if (todoInput.value != '') {
+            addTodo({name: todoInput.value,});
+            setValue('')
         }
     };
+
+    useKeyboardShortcuts([{
+        action: userAddTodo,
+        keys: ['ENTER']
+    }], [todoInput]);
 
     return (
         <div {...props}>
             {todos.map((todo, index) => <TodoItem key={index} todo={todo} />)}
-            <input ref={input} type="text"/>
+            <input {...todoInput} type="text"/>
             <div>Done: {doneTodos}</div>
-            <button onClick={onClickHandler}>Add</button>
+            <button onClick={userAddTodo}>Add</button>
         </div>
     );
 };
 
-export default styled(observer(TodoList))`
-
-`
+export default styled(observer(TodoList))``
