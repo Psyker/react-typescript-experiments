@@ -32,6 +32,10 @@ class AppStore {
         })
     };
 
+    @action public deleteTodo = (todoItem: Todo) => {
+        this.todos.remove(todoItem)
+    };
+
     get doneTodos() {
         return this.todos.filter(todo => todo.done).length
     }

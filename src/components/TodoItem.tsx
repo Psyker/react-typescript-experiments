@@ -11,7 +11,7 @@ interface Props {
 
 const TodoItem: FunctionComponent<Props> = (props) => {
     const {todo} = props;
-    const {changeTodo} = appStore;
+    const {changeTodo, deleteTodo} = appStore;
     const {setValue, ...todoInput}= useInput(todo.name);
     const [isEditing, setIsEditing] = useState(false);
 
@@ -31,13 +31,20 @@ const TodoItem: FunctionComponent<Props> = (props) => {
         }
     };
 
+    const onDeleteHandler = () => {
+        deleteTodo(todo)
+    };
+
     return (
         <div {...props}>
             <input onChange={onChangeHandler} type="checkbox"/>
             {
                 isEditing
                 ? <input {...todoInput} onBlur={onBlurHandler}/>
-                : <span onDoubleClick={onDoubleClickHandler}>{todo.name}</span>
+                : <>
+                    <button onClick={onDeleteHandler}>x</button>
+                    <span onDoubleClick={onDoubleClickHandler}>{todo.name}</span>
+                </>
             }
         </div>
     );
