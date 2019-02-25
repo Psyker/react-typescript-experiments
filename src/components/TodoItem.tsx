@@ -4,10 +4,22 @@ import styled from "styled-components";
 import appStore, {Todo} from "../store/AppStore";
 import {observer} from "mobx-react-lite";
 import {useInput} from "../utils/hooks";
+import posed from "react-pose";
 
 interface Props {
     readonly todo: Todo
 }
+
+const TodoPose = posed.div({
+    enter: {
+        opacity: 1,
+        scale: 1
+    },
+    exit: {
+        opacity: 0,
+        scale: 0.5
+    },
+});
 
 const TodoItem: FunctionComponent<Props> = (props) => {
     const {todo} = props;
@@ -36,17 +48,17 @@ const TodoItem: FunctionComponent<Props> = (props) => {
     };
 
     return (
-        <div {...props}>
+        <TodoPose {...props}>
             <input onChange={onChangeHandler} type="checkbox"/>
             {
                 isEditing
                 ? <input {...todoInput} onBlur={onBlurHandler}/>
                 : <>
-                    <button onClick={onDeleteHandler}>x</button>
+                    <span onClick={onDeleteHandler}>🗑</span>
                     <span onDoubleClick={onDoubleClickHandler}>{todo.name}</span>
                 </>
             }
-        </div>
+        </TodoPose>
     );
 };
 

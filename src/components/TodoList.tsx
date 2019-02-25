@@ -5,6 +5,7 @@ import appStore from "../store/AppStore";
 import {observer} from "mobx-react-lite";
 import TodoItem from "./TodoItem";
 import {useInput, useKeyboardShortcuts} from "../utils/hooks";
+import {PoseGroup} from "react-pose";
 
 const TodoList: FunctionComponent = (props) => {
     const {todos, addTodo, doneTodos} = appStore;
@@ -23,7 +24,9 @@ const TodoList: FunctionComponent = (props) => {
 
     return (
         <div {...props}>
-            {todos.map((todo, index) => <TodoItem key={index} todo={todo} />)}
+            <PoseGroup>
+                {todos.map((todo, index) => <TodoItem key={index} todo={todo} />)}
+            </PoseGroup>
             <input {...todoInput} type="text"/>
             <div>Done: {doneTodos}</div>
             <button onClick={userAddTodo}>Add</button>
@@ -31,4 +34,10 @@ const TodoList: FunctionComponent = (props) => {
     );
 };
 
-export default styled(observer(TodoList))``
+export default styled(observer(TodoList))`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
