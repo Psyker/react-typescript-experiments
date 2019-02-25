@@ -49,7 +49,7 @@ const TodoItem: FunctionComponent<Props> = (props) => {
 
     return (
         <TodoPose {...props}>
-            <input onChange={onChangeHandler} type="checkbox"/>
+            <input onChange={onChangeHandler} checked={todo.done} type="checkbox"/>
             {
                 isEditing
                 ? <input {...todoInput} onBlur={onBlurHandler}/>

@@ -9,8 +9,17 @@ export interface Todo {
     updatedAt?: Date
 }
 
+export interface Filter {
+    done: boolean,
+    search: string
+}
+
 class AppStore {
     @observable public todos: List<Todo> = new List();
+    @observable public filters: Filter = {
+        done: false,
+        search: ''
+    };
 
     @action public addTodo = (todoItem: Pick<Todo, 'name'>) => {
         this.todos.push({
@@ -35,6 +44,19 @@ class AppStore {
     @action public deleteTodo = (todoItem: Todo) => {
         this.todos.remove(todoItem)
     };
+
+    @action changeFilters = (filter: Filter) => {
+        this.filters = {...this.filters, ...filter}
+    };
+
+    get filtered() {
+        return this.todos.filter(todo => {
+            if (todo.done === this.filters.done || (this.filters.search && todo.name === this.filters.search)) {
+                return todo
+            }
+            return;
+        })
+    }
 
     get doneTodos() {
         return this.todos.filter(todo => todo.done).length

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {FunctionComponent, MouseEventHandler} from "react";
+import {FunctionComponent, MouseEventHandler, useState} from "react";
 import styled from "styled-components";
 import appStore from "../store/AppStore";
 import {observer} from "mobx-react-lite";
@@ -8,8 +8,9 @@ import {useInput, useKeyboardShortcuts} from "../utils/hooks";
 import {PoseGroup} from "react-pose";
 
 const TodoList: FunctionComponent = (props) => {
-    const {todos, addTodo, doneTodos} = appStore;
+    const {addTodo, doneTodos, filters ,filtered, changeFilters} = appStore;
     const {setValue, ...todoInput} = useInput('');
+    const [search, setSearch] = useState('');
     const userAddTodo: MouseEventHandler<HTMLButtonElement> = () => {
         if (todoInput.value != '') {
             addTodo({name: todoInput.value,});
@@ -25,11 +26,19 @@ const TodoList: FunctionComponent = (props) => {
     return (
         <div {...props}>
             <PoseGroup>
-                {todos.map((todo, index) => <TodoItem key={index} todo={todo} />)}
+                {filtered.map((todo, index) => <TodoItem key={index} todo={todo} />)}
             </PoseGroup>
             <input {...todoInput} type="text"/>
             <div>Done: {doneTodos}</div>
             <button onClick={userAddTodo}>Add</button>
+            <input type="checkbox" checked={filters.done} onChange={() => {
+                changeFilters({...filters, done: !filters.done})
+            }}/>
+            <input type="text" value={search} onChange={(e) => {
+                console.log(filters, search);
+                setSearch(e.target.value);
+                changeFilters({...filters, search: search})
+            }}/>
         </div>
     );
 };
